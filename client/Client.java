@@ -19,7 +19,7 @@ public class Client {
 
     public Client() {
         try {
-            Socket s = new Socket("localhost", 3333);
+            Socket s = new Socket("172.16.0.40", 3333);
             din = new DataInputStream(s.getInputStream());
             dout = new DataOutputStream(s.getOutputStream());
 

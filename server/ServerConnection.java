@@ -8,6 +8,7 @@ import java.net.Socket;
 public class ServerConnection extends Thread {
 
     Socket socket;
+    Server server;
     DataInputStream din;
     DataOutputStream dout;
     boolean shouldRun = true;
@@ -15,14 +16,24 @@ public class ServerConnection extends Thread {
     public ServerConnection(Socket socket, Server server) {
         super("ServerConnectionThread");
         this.socket = socket;
+        this.server = server;
     }
 
     public void sendStringToClient(String text) {
+        try {
+            dout.writeUTF(text);
+            dout.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 
     public void sendStringToAllClients(String text) {
-
+        for (int index = 0; index < server.connections.size(); index++){
+            ServerConnection sc = server.connections.get(index);
+            sc.sendStringToClient(text);
+        }
     }
 
     public void run() {
